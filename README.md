@@ -43,4 +43,4 @@ Playwright starts the local static server unless TEST_BASE_URL is set. Lighthous
 
 Read docs/manual-validation.md before attempting reproduction. The examples are not a full Xbox application package. Generate the official UWP blank project on Windows, add the probe and packaged model, then capture deployment, execution, correctness and provenance on physical hardware. Current Windows ML / App SDK desktop support does not establish Xbox UWP support.
 
-Private repository: https://github.com/gianlucamazza/xbox-ai-lab. docs/issues.md contains prioritized issue-ready specifications; issue import remains pending. Source is also available through the downloadable archive.
+Private repository: https://github.com/gianlucamazza/xbox-ai-lab. docs/issues.md links to the prioritized GitHub issues; docs/execution-plan.md defines dependencies, acceptance gates and milestones. Source is also available through the downloadable archive.

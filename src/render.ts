@@ -1,3 +1,4 @@
+import { roadmapItems } from "./roadmap";
 import { sources } from "./sources";
 import { feasibility, lessons } from "./content";
 import experiments from "../data/experiments.json";
@@ -184,61 +185,19 @@ function docs() {
 function roadmap() {
   return (
     head(
-      "ROADMAP / DEPENDENCIES BEFORE DATES",
+      "ROADMAP / EVIDENCE-GATED MILESTONES",
       "Earn the next milestone.",
-      "Prioritized issue-ready work. A stage advances when its evidence passes review, not when a date arrives.",
+      "Nine tracked issues, four milestones, and explicit prerequisites. Status is a reviewed snapshot, not a live GitHub feed.",
     ) +
-    `<div class="roadmap-list">${[
-      [
-        "01",
-        "P0 · HARDWARE GATE",
-        "Establish the console baseline",
-        "Pending",
-        "Deploy a minimal UWP package on Series S and Series X. Capture OS, SDK, package revision, app mode, MemoryManager limits and screenshots. Acceptance: both deployment logs and an independent reproduction.",
-      ],
-      [
-        "02",
-        "P0 · EXP-001",
-        "Validate the first tensor operation",
-        "Pending",
-        "Probe legacy WinRT API, load Add graph, compare [4,6] and export logs. Acceptance: model SHA-256, source commit, numerical check, raw repeated samples and checksummed artifacts.",
-      ],
-      [
-        "03",
-        "P1 · CAPABILITY REPORT",
-        "Investigate GPU execution",
-        "Blocked by 01–02",
-        "Pin SystemInfoUWP, capture D3D feature level and test API/package availability. Acceptance: explicit provider/adapter evidence or a reproducible failure; CPU fallback is not GPU success.",
-      ],
-      [
-        "04",
-        "P1 · REPRODUCIBILITY",
-        "Independent benchmark replication",
-        "Blocked by 02",
-        "Repeat the protocol on another physical console. Acceptance: raw cold/warm populations, environment, units, methodology, review and artifact checksums.",
-      ],
-      [
-        "05",
-        "P2 · OPERATOR COVERAGE",
-        "Try a quantized transformer block",
-        "Blocked by 03",
-        "Validate operators, precision error and peak memory. Acceptance: deterministic host fixtures and a bounded console memory budget.",
-      ],
-      [
-        "06",
-        "P2 · GENERATION",
-        "Attempt bounded autoregressive inference",
-        "Blocked by 05",
-        "Validate tokenizer, cache and logits before timing. Acceptance: deterministic token IDs, TTFT/decode definitions, raw evidence and reproducible success or failure.",
-      ],
-    ]
+    `<div class="callout">Reviewed 7 November 2026. Website CI currently fails at npm ci; the host ONNX job passes. Browser gates and console validation remain pending. <a class="textlink" href="https://github.com/gianlucamazza/xbox-ai-lab/actions/runs/42374743200">Inspect the reviewed CI run →</a></div>
+    <p>M1: private website preview · M2: reproducible console experiment · M3: GPU decision · M4: transformer decision. UWP and evidence-format work can start independently of the website CI repair.</p>
+    <div class="roadmap-list">${roadmapItems
       .map(
-        ([n, p, t, s, d]) =>
-          `<article><div class="milestone">${n}</div><div><div class="eyebrow">${p}</div><h2>${t}</h2><p>${d}</p></div>${badge(s, "amber")}</article>`,
+        (item) =>
+          `<article id="issue-${item.issue}"><div class="milestone">${String(item.issue).padStart(2, "0")}</div><div><div class="eyebrow">${item.priority} · ${item.phase}</div><h2>${esc(item.title)}</h2><p>${esc(item.description)}</p><p><strong>Prerequisites:</strong> ${esc(item.requires)}</p><p><strong>Exit criterion:</strong> ${esc(item.acceptance)}</p><a class="textlink" href="https://github.com/gianlucamazza/xbox-ai-lab/issues/${item.issue}">Issue #${item.issue} →</a></div>${badge(esc(item.label), item.status === "ready" ? "" : "amber")}</article>`,
       )
-      .join(
-        "",
-      )}</div><p>These are planned issue specifications. They have not been submitted to a public GitHub repository.</p>`
+      .join("")}</div>
+    <p>Issue links point to a private repository and require access. No task is marked complete in this snapshot. Physical-console work requires an operator and hardware; Windows builds and host tests are separate evidence.</p>`
   );
 }
 function about() {

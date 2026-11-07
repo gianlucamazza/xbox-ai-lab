@@ -33,3 +33,7 @@ Updated Zod to 4.6.7, Vite to 8.3.6 and Lighthouse CI to 0.16.0. Patched transit
 ## Remaining release work
 
 Run the committed GitHub Actions workflow on a runner that permits browser processes. Retain Playwright/axe and Lighthouse reports, fix any findings, then satisfy the website release checklist before deployment. Reproduce the console protocol independently before making inference compatibility or performance claims. The private GitHub repository is gianlucamazza/xbox-ai-lab. Its first Actions run (42374106825) failed in the web job at npm ci with EUSAGE and missing lockfile dependencies; the model-reference job passed. Browser and performance checks were skipped. This runner-specific installation issue remains open as #1. Nine planning issues are now tracked in docs/issues.md and docs/execution-plan.md; their creation does not mark implementation complete.
+
+## Roadmap synchronization — 7 November 2026
+
+Reviewed run 42374743200 for commit 1abb0a2: web failed at npm ci; model-reference succeeded. No browser quality gate passed in that run. Issues #1–#9 now carry explicit execution status, prerequisite links and milestone identifiers. docs/roadmap.md and the /roadmap source reflect the same reviewed snapshot. Planning updates do not resolve #1 or validate console execution.

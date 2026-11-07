@@ -2,9 +2,11 @@
 
 Aggiornato: 7 novembre 2026. Repository privato. Le issue pianificano lavoro futuro; non dimostrano esecuzione o compatibilità hardware.
 
+Per lo stato operativo aggiornato e i collegamenti alle issue vedere la [roadmap](roadmap.md).
+
 ## Baseline verificata
 
-Commit: f2aeff3e1bff5c57326423c3f3cf703d529ccb41. La [prima run GitHub Actions](https://github.com/gianlucamazza/xbox-ai-lab/actions/runs/42374106825) è fallita nel job web a npm ci: EUSAGE, con proxy-agent e altre dipendenze mancanti nel lockfile. La causa di fondo va investigata confrontando le toolchain. Il job model-reference passa. Playwright, axe e Lighthouse non sono stati eseguiti da quella run. I controlli locali passati restano distinti dalla riproducibilità sul runner.
+Snapshot del codice: 1abb0a2dd6e12b7da1ad504199ca821a8b3a41d3. Anche la [run 42374743200](https://github.com/gianlucamazza/xbox-ai-lab/actions/runs/42374743200) fallisce nel job web a npm ci. La prima run 42374106825 segnalava EUSAGE con dipendenze mancanti nel lockfile; la causa di fondo resta da investigare. Il job model-reference passa in entrambe le run. I controlli browser non sono stati eseguiti. Nessun task è completato e non è stata acquisita evidenza console.
 
 ## Ordine di esecuzione
 

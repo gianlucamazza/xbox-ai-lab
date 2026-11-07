@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Xbox AI Lab benchmark measurement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["metric", "unit", "samples"],
+  "properties": {
+    "metric": {
+      "enum": [
+        "cold_latency",
+        "warm_latency",
+        "ttft",
+        "tokens_per_second",
+        "peak_memory"
+      ]
+    },
+    "unit": {
+      "enum": ["ms", "tokens/s", "bytes"]
+    },
+    "samples": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "number",
+        "minimum": 0
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "metric": {
+            "const": "cold_latency"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "ms"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "metric": {
+            "const": "warm_latency"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "ms"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "metric": {
+            "const": "ttft"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "ms"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "metric": {
+            "const": "tokens_per_second"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "tokens/s"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "metric": {
+            "const": "peak_memory"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "bytes"
+          }
+        }
+      }
+    }
+  ]
+}

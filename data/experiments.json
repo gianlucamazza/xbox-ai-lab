@@ -1,0 +1,40 @@
+[
+  {
+    "id": "EXP-001",
+    "title": "The smallest useful inference",
+    "hypothesis": "A minimal float32 Add graph can load and evaluate through the legacy WinRT CPU API in an x64 Xbox UWP app.",
+    "status": "unverified",
+    "environment": {
+      "hardware": "Xbox Series S / Series X \u2014 not yet executed",
+      "os": null,
+      "sdk": "22621 or later; exact build pending",
+      "configuration": "Release x64; debugger detached",
+      "appMode": "app",
+      "runtime": "Windows.AI.MachineLearning \u2014 availability probe required"
+    },
+    "model": {
+      "name": "add.onnx",
+      "sha256": null,
+      "opset": 9,
+      "precision": "FP32",
+      "sizeBytes": null
+    },
+    "sourceRevision": null,
+    "provider": "CPU (requested; unverified)",
+    "reproduction": [
+      "Create the UWP blank app described in tutorial 04.",
+      "Generate add.onnx using examples/generate_model.py and record its SHA-256.",
+      "Add the model as Content; adapt examples/Probe.cs to the blank app.",
+      "Deploy Release x64 to the console; run without the debugger.",
+      "Export raw timing, environment and correctness logs with commit and artifact checksums."
+    ],
+    "measurements": [],
+    "correctness": null,
+    "limitations": [
+      "No physical console execution evidence is available.",
+      "Linux model checks cannot establish Windows or Xbox API compatibility.",
+      "GPU execution is outside this experiment."
+    ],
+    "artifacts": []
+  }
+]

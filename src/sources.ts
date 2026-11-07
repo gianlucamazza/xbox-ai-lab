@@ -77,4 +77,56 @@ export const sources = [
     version: "Live API documentation • reference",
     scope: "Model structural validation, not hardware validation.",
   },
+  {
+    id: "crossbuild",
+    title: "uwp-crossbuild — native Linux build path",
+    url: "https://github.com/gianlucamazza/uwp-crossbuild/blob/e692f28ea613bba9bc08715ef111ad48992bf6a3/README.md",
+    version:
+      "e692f28ea613bba9bc08715ef111ad48992bf6a3 · source reviewed 2026-11-07",
+    scope:
+      "Community C++/WinRT cross-build using clang/lld and SDK tools under Wine; excludes .xaml compilation and direct C# builds. Upstream reports a single Series S launch.",
+  },
+  {
+    id: "crossbuild-porting",
+    title: "Porting a .vcxproj from Linux",
+    url: "https://github.com/gianlucamazza/uwp-crossbuild/blob/e692f28ea613bba9bc08715ef111ad48992bf6a3/docs/porting-a-vcxproj.md",
+    version:
+      "e692f28ea613bba9bc08715ef111ad48992bf6a3 · source reviewed 2026-11-07",
+    scope:
+      "MSBuild subset and explicit refusals. Upstream reports activation/window and GGUF loading; not this Add experiment, GPU proof or token throughput.",
+  },
+  {
+    id: "crossbuild-example",
+    title: "Programmatic hello-uwp example",
+    url: "https://github.com/gianlucamazza/uwp-crossbuild/blob/e692f28ea613bba9bc08715ef111ad48992bf6a3/examples/hello-uwp/README.md",
+    version:
+      "e692f28ea613bba9bc08715ef111ad48992bf6a3 · source reviewed 2026-11-07",
+    scope:
+      "Native app with one application runtimeclass, UI created in C++ and generated .winmd activation metadata.",
+  },
+  {
+    id: "openappx",
+    title: "openappx — Linux package/sign/deploy",
+    url: "https://github.com/gianlucamazza/openappx/blob/ceaf535424c23db03d7c46e28e36c01b528ad237/README.md",
+    version:
+      "0.7.0 · ceaf535424c23db03d7c46e28e36c01b528ad237 · source reviewed 2026-11-07",
+    scope:
+      "Python packaging and Device Portal client; signing uses the optional extra. Does not compile UWP binaries. Certificate pinning is documented.",
+  },
+  {
+    id: "crossbuild-ci",
+    title: "uwp-crossbuild CI evidence",
+    url: "https://github.com/gianlucamazza/uwp-crossbuild/actions/runs/38695383897",
+    version: "e692f28ea613bba9bc08715ef111ad48992bf6a3 · inspected 2026-11-07",
+    scope:
+      "scripts job passed; manual full-build skipped. This green run is not SDK compilation or a physical-console test.",
+  },
+  {
+    id: "openappx-ci",
+    title: "openappx CI evidence",
+    url: "https://github.com/gianlucamazza/openappx/actions/runs/38695391436",
+    version: "08eddcf987755ad77fb49b5c8b40d4bd488ff26e · inspected 2026-11-07",
+    scope:
+      "Python 3.10–3.14 jobs passed at this run revision. Distinct from reviewed main ceaf535; CI packaging tests are not console inference.",
+  },
 ] as const;

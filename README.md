@@ -35,12 +35,16 @@ Playwright starts the local static server unless TEST_BASE_URL is set. Lighthous
 - src/sources.ts: source URLs, review dates, versions and scope caveats.
 - src/schema.ts and data/: typed evidence registry and benchmark measurement schema.
 - src/render.ts, src/style.css, src/client.ts: static rendering and accessible progressive enhancement.
-- examples/: pinned host model generator and uncompiled UWP integration probe.
+- examples/: pinned host model generator and optional uncompiled Windows C# reference; native Linux probe integration is tracked in issue #3.
 - docs/: architecture decisions, console validation, maintenance and release controls.
 - tests/: schema, content/link integrity and Playwright/axe tests.
 
-## Console work
+## Linux UWP build and console work
 
-Read docs/manual-validation.md before attempting reproduction. The examples are not a full Xbox application package. Generate the official UWP blank project on Windows, add the probe and packaged model, then capture deployment, execution, correctness and provenance on physical hardware. Current Windows ML / App SDK desktop support does not establish Xbox UWP support.
+The primary planned path reuses [uwp-crossbuild](https://github.com/gianlucamazza/uwp-crossbuild) for native C++/WinRT cross-compilation and [openappx](https://github.com/gianlucamazza/openappx) for pack/sign/inspect and Device Portal deployment. A Windows host is not a universal prerequisite. These are community build tools; the planned deployment uses official Device Portal APIs, while runtime API support still requires console-specific verification.
+
+Read [the pinned toolchain review](docs/linux-toolchain-review.md), [ADR-002](docs/ADR-002.md) and [manual validation](docs/manual-validation.md). The cross-builder needs LLVM and official SDK components, running some SDK tools under Wine. It does not compile .xaml files or the C# Probe.cs reference. Issue #3 must implement the native programmatic-UI probe before the lab can claim a cross-built application.
+
+Upstream documents one Series S launch and GGUF loading. This lab has not reproduced EXP-001 or imported those claims as validated evidence. Package installation, app launch, model loading and numerical inference remain separate gates. Windows/Visual Studio is retained as an alternative reference path.
 
 Private repository: https://github.com/gianlucamazza/xbox-ai-lab. docs/issues.md links to the prioritized GitHub issues; docs/execution-plan.md defines dependencies, acceptance gates and milestones. Source is also available through the downloadable archive.

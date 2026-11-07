@@ -48,15 +48,15 @@ export const roadmapItems = [
     phase: "M2",
     priority: "P0",
     status: "ready",
-    label: "Ready · Windows toolchain",
-    title: "Build a complete UWP probe",
+    label: "Ready · Linux native integration",
+    title: "Integrate the Linux-native UWP probe",
     dependencyIssues: [],
     requires:
-      "Windows build tooling. Integrate CI after #1; hardware is not needed to compile.",
+      "Reuse pinned uwp-crossbuild and openappx. A Linux SDK toolchain is required; Windows is an optional comparison path.",
     acceptance:
-      "A minimal x64 UWP project compiles from a clean checkout, packages the model and exports a structured log.",
+      "A C++/WinRT x64 app with programmatic UI cross-builds, packages, signs and exports structured logs. Keep lightweight CI separate from full SDK builds.",
     description:
-      "Turn the integration snippet into a reproducible application. A successful Windows build does not validate Xbox execution.",
+      "Port the C# reference semantics to native C++; do not pass Probe.cs or .xaml files to the reviewed cross-builder. Upstream sample launch is separate from EXP-001.",
   },
   {
     issue: 4,
@@ -68,7 +68,7 @@ export const roadmapItems = [
     dependencyIssues: [],
     requires: "Can begin independently; coordinate the export format with #3.",
     acceptance:
-      "Missing files, altered hashes and inconsistent metadata are rejected; raw measurements retain their process and units.",
+      "Missing files, altered hashes and inconsistent metadata are rejected; raw measurements retain their process and units. Include host OS, LLVM/Wine/SDK and both tool revisions; distinguish upstream-reported evidence from lab reproduction.",
     description:
       "Separate schema validation, artifact verification, console correctness and independent reproduction.",
   },
@@ -81,11 +81,11 @@ export const roadmapItems = [
     title: "Run EXP-001 on a physical console",
     dependencyIssues: [3, 4],
     requires:
-      "A working probe, evidence format, Windows PC and operator with console access.",
+      "A cross-built probe, evidence format, Linux workstation and operator with Developer Mode console access. Windows remains optional.",
     acceptance:
       "Checksummed deployment and execution evidence, with correct [4,6] output or a reproducible failure and explicit limits.",
     description:
-      "Prefer Series S first when available. Track each console separately; untested Series X remains pending.",
+      "Reproduce from Linux through official Device Portal APIs. Capture retail-versus-managed hardware provenance and keep upstream Series S reports separate from lab evidence.",
   },
   {
     issue: 6,
@@ -114,7 +114,7 @@ export const roadmapItems = [
     acceptance:
       "An actual provider/adapter attribution or a documented compatibility failure; a CPU fallback does not count as GPU execution.",
     description:
-      "D3D feature levels, API presence, package compatibility and GPU inference are separate evidence gates.",
+      "D3D feature levels, API presence, package compatibility and GPU inference are separate evidence gates. Cross-build success and upstream GGUF loading do not establish GPU or WinML compatibility.",
   },
   {
     issue: 8,

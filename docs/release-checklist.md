@@ -12,9 +12,9 @@
 - [ ] Representative production output reviewed on desktop and mobile
 - [ ] Source archive and reproducibility instructions verified
 
-## Console and manual gates (pending)
+## Application, console and manual gates (pending)
 
-- [ ] Windows UWP example compiles with recorded toolchain
+- [ ] Native C++/WinRT UWP app cross-builds on Linux with pinned uwp-crossbuild/openappx and recorded SDK; Windows comparison optional
 - [ ] Official activation procedure checked with current account requirements
 - [ ] Deployment reproduced on Series S and Series X
 - [ ] EXP-001 numerical correctness and raw captures reviewed

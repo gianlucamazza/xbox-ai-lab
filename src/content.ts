@@ -20,10 +20,10 @@ export const lessons: Lesson[] = [
     intro:
       "Start with the sandbox, not the advertised compute. Series S and Series X retail specifications are not the resources available to a UWP application.",
     prerequisites:
-      "A retail Series S or Series X; a Windows development PC for later steps.",
+      "A retail Series S or Series X for physical validation. A Linux workstation can build and package a native UWP app with the reviewed community tools; Windows/Visual Studio remains an alternative.",
     steps: [
       "Read the official resource allocation page. Foreground app and game budgets differ: 1 GB and 5 GB are documented, not independently measured here.",
-      "Treat Developer Mode UWP, Windows desktop, and managed GDK development as separate execution environments.",
+      "Treat Developer Mode UWP, Windows desktop, and managed GDK development as separate execution environments. Linux cross-compilation changes the build host, not the Xbox sandbox or API support.",
       "Record console model, OS build and app classification before selecting a runtime.",
     ],
     expected: "An environment inventory, not an inference result.",
@@ -53,44 +53,59 @@ export const lessons: Lesson[] = [
   },
   {
     id: "03",
-    title: "Configure your Windows workstation",
+    title: "Prepare the Linux build environment",
     label: "TOOLCHAIN",
-    status: "Documented baseline · local build pending",
+    status: "Upstream source-reviewed · lab integration pending",
     intro:
-      "The legacy setup guide contains old Visual Studio and SDK examples. Use the Series-specific update when choosing a modern toolchain.",
+      "Reuse uwp-crossbuild for native C++/WinRT compilation and openappx for packaging, signing and Device Portal deployment. These are community host tools, not a Microsoft-supported Linux SDK product.",
     prerequisites:
-      "Windows PC with Visual Studio and UWP development components available.",
+      "Linux, clang-cl/lld-link and LLVM utilities, Wine and the SDK helper dependencies documented upstream. Obtain Microsoft SDK/CRT under their applicable terms. No physical console is needed to prepare or compile.",
     steps: [
-      "Install Visual Studio with UWP tooling and a Windows SDK of 22621 or later. Record exact IDE, workload and SDK versions.",
-      "Enable Developer Mode on the PC using Windows Settings. Connect PC and console to the same trusted local network.",
-      "Create a Blank App (Universal Windows), not a WinUI 3 desktop app. Select x64 and a target SDK installed on the PC.",
+      "Pin uwp-crossbuild to e692f28ea613bba9bc08715ef111ad48992bf6a3 and openappx to ceaf535424c23db03d7c46e28e36c01b528ad237 (reviewed version 0.7.0). Run the upstream dependency check before fetching SDK components.",
+      "Follow the pinned upstream setup: xwin supplies headers/libraries; SDK tools midlrt, cppwinrt and makepri run under Wine. Pin the SDK and match cppwinrt.exe to its projection headers.",
+      "Choose a native C++/WinRT project with the UI built in code and no .xaml files. The reviewed tool does not compile .csproj files or the existing Probe.cs example.",
+      "Keep SDK-bearing full builds separate from lightweight CI. The inspected successful uwp-crossbuild CI run passed script checks but skipped full-build. Windows/Visual Studio remains an optional reference path.",
     ],
     expected:
-      "A local UWP build succeeds. This has not been compiled in this Linux environment.",
+      "A recorded Linux dependency inventory and, after setup, an x64 AppContainer build candidate. No SDK cross-build was executed for Xbox AI Lab in this review.",
     troubleshooting:
-      "Missing templates require the appropriate UWP components. Old SDKs may fail Xbox deployment because of the secure communication change noted in August 2023.",
-    refs: ["setup", "series"],
+      "Do not feed Probe.cs to build-project.sh. Unsupported MSBuild constructs are refused; .xaml compilation is outside the reviewed path. The upstream manual full-build has Wine/MSXML caveats; a green script job is not a compiled application.",
+    refs: [
+      "crossbuild",
+      "crossbuild-porting",
+      "openappx",
+      "crossbuild-ci",
+      "series",
+    ],
+    code: 'git clone https://github.com/gianlucamazza/uwp-crossbuild tools/uwp-crossbuild\ngit -C tools/uwp-crossbuild checkout e692f28ea613bba9bc08715ef111ad48992bf6a3\nbash tools/uwp-crossbuild/scripts/check-deps.sh\n# Complete the pinned upstream SDK setup before building.\npython -m pip install "openappx[sign] @ git+https://github.com/gianlucamazza/openappx@ceaf535424c23db03d7c46e28e36c01b528ad237"',
   },
   {
     id: "04",
-    title: "Deploy a minimal UWP application",
+    title: "Build, package and deploy a minimal UWP app",
     label: "DEPLOYMENT",
-    status: "Official workflow · console test pending",
+    status: "Upstream sample path · lab reproduction pending",
     intro:
-      "Establish a plain application deployment before adding any machine learning dependency.",
+      "Use the pinned hello-uwp native example to establish the cross-build and packaging path before adding machine learning. Upstream reports a Series S launch; that is not a captured Xbox AI Lab run.",
     prerequisites:
-      "Tutorials 02–03; console in Dev Home; a user signed in; local network access.",
+      "Tutorial 03 toolchain configured; a Developer Mode console and authenticated Device Portal for the deployment stage. No Windows workstation is required for this path.",
     steps: [
-      "In the blank app, add a visible TextBlock containing Hello from Xbox AI Lab. Build x64.",
-      "Select Remote Machine as the debug target and enter the address displayed in Dev Home. Pair using the PIN shown on the console when prompted.",
-      "Deploy using Visual Studio. Once the UI works, build Release x64 and launch the installed app without the debugger for resource measurements.",
+      "Build examples/hello-uwp/hello-uwp.vcxproj with build-project.sh in Release x64. Keep the executable, generated hello.winmd, manifest and assets together.",
+      "Run openappx validate, pack, sign and inspect on the layout. Publisher must match the certificate subject exactly. The upstream sample uses CN=uwp-crossbuild-dev; use a local development certificate and keep its private key out of source control.",
+      "Use the pinned openappx deploy CLI directly with --pin-sha256 and the trusted console certificate fingerprint. Install the development certificate through the official Device Portal flow, deploy the signed package, then list packages and start the returned full package name with --app-id HelloUwp.",
+      "Capture installation and visible launch separately. Run subsequent measurements without an attached debugger; retain host tool revisions and console model/OS. Windows/Visual Studio deployment is an optional alternative.",
     ],
     expected:
-      "The TextBlock is visible on the physical console. Save a screenshot and deployment log before marking this step tested.",
+      "For a successful physical reproduction, the hello-uwp UI is visible and a checksummed capture identifies the package and console. Upstream documentation describes one Series S on OS 26100.8866; retail-versus-managed hardware provenance must be captured for the lab.",
     troubleshooting:
-      "Check console mode, signed-in user, pairing and network reachability. A successful PC run is not a console deployment.",
-    refs: ["setup", "activation"],
-    code: '// Place inside the generated MainPage constructor, after InitializeComponent().\nContent = new Windows.UI.Xaml.Controls.TextBlock {\n    Text = "Hello from Xbox AI Lab", FontSize = 32\n};',
+      "Installation is not launch or inference. Keep .winmd activation metadata and required framework packages. The reviewed run-on-device.sh hardcodes --insecure, so this guide uses the openappx CLI with certificate pinning rather than copying that helper unchanged.",
+    refs: [
+      "crossbuild",
+      "crossbuild-example",
+      "openappx",
+      "crossbuild-porting",
+      "activation",
+    ],
+    code: "bash tools/uwp-crossbuild/scripts/build-project.sh \\\n  --project tools/uwp-crossbuild/examples/hello-uwp/hello-uwp.vcxproj \\\n  --config Release --platform x64 --out build/hello-layout\nopenappx validate --root build/hello-layout\nopenappx pack --root build/hello-layout --out build/hello.msix\n# Sign with a local certificate matching the manifest Publisher.\nopenappx sign --package build/hello.msix --pfx /path/to/dev.pfx\nopenappx inspect --package build/hello.msix\n# Then use authenticated Device Portal deployment with --pin-sha256.",
   },
   {
     id: "05",
@@ -100,39 +115,39 @@ export const lessons: Lesson[] = [
     intro:
       "A two-input Add graph makes numerical correctness easy to inspect and keeps model complexity out of the first compatibility test.",
     prerequisites:
-      "Python 3.11+ in a virtual environment; examples/requirements.txt from the source.",
+      "Python 3.11+ in a virtual environment on Linux or Windows; examples/requirements.txt from the source.",
     steps: [
       "Install the pinned example requirements in a virtual environment.",
       "Run examples/generate_model.py. It checks the graph, runs a host CPU correctness reference and prints the model SHA-256.",
-      "Keep add.onnx and the printed hash together. Add it to the UWP project as Content, copied into the application package.",
+      "Keep add.onnx and its hash together. Include it in the native UWP package layout and verify it survives pack/unpack. The optional C# reference uses Content at the package root.",
     ],
     expected:
       "For x=[1,2] and b=[3,4], y=[4,6]. This expected output is mathematical, not a reported Xbox observation.",
     troubleshooting:
       "A checker success proves model structure only. Keep opset 9 and IR 4 for the conservative legacy probe; record any import error verbatim.",
     refs: ["onnx", "winml"],
-    code: "python -m venv .venv\n# Windows PowerShell\n.venv\\Scripts\\Activate.ps1\npython -m pip install -r examples/requirements.txt\npython examples/generate_model.py",
+    code: "python -m venv .venv\n# Linux shell\n. .venv/bin/activate\npython -m pip install -r examples/requirements.txt\npython examples/generate_model.py\n# Windows PowerShell alternative activation: .venv\\Scripts\\Activate.ps1",
   },
   {
     id: "06",
     title: "Probe CPU inference",
     label: "INFERENCE",
-    status: "Proposed experiment · EXP-001",
+    status: "Proposed native integration · EXP-001",
     intro:
-      "First test whether Windows.AI.MachineLearning is present. API presence, model loading and successful evaluation are separate gates.",
+      "First test whether Windows.AI.MachineLearning is present. API presence, model loading and evaluation remain separate gates regardless of whether Linux or Windows built the application.",
     prerequisites:
-      "Working blank UWP application, packaged add.onnx, SDK exposing the legacy WinRT namespace.",
+      "A working native UWP deployment and packaged add.onnx. The C++/WinRT CPU probe and JSON export must be implemented under issue #3; Probe.cs remains an optional Windows-only reference.",
     steps: [
-      "Copy examples/Probe.cs into the generated app and call await Probe.RunAsync() from an async UI event. Display or export its returned log.",
-      "The probe checks ApiInformation before loading the model and explicitly requests LearningModelDeviceKind.Cpu.",
-      "Run on Series S and Series X separately. Preserve output, HRESULT on failure, package revision, console OS and model hash.",
+      "Implement the probe in the programmatic C++/WinRT app from tutorial 04: check API presence, load the packaged model and request LearningModelDeviceKind.Cpu. The lab has not yet added this native project.",
+      "Retain examples/Probe.cs as a semantic reference for an optional Windows C# Blank App. It is not an input to uwp-crossbuild and is not proof that a Linux build exists.",
+      "For each physical run, record host OS, compiler/SDK and both tool revisions in addition to console OS, source commit, package hash and model checksum. Keep upstream sample-launch reports distinct from EXP-001 Add evidence.",
     ],
     expected:
-      "Either a recorded unsupported/API/load error, or y=[4,6] with correctness within atol=1e-6, rtol=1e-6. Neither outcome has been observed on Xbox by this project.",
+      "A captured unsupported/API/import failure or [4,6] within atol=1e-6, rtol=1e-6. No Xbox AI Lab Add execution has been captured. Loading a GGUF model in an upstream application does not validate this WinML experiment.",
     troubleshooting:
-      "Do not replace a failed Xbox runtime with a desktop package and call that support. Report model-import failures separately from missing APIs.",
-    refs: ["winml", "samples"],
-    code: 'bool available = Windows.Foundation.Metadata.ApiInformation\n    .IsTypePresent("Windows.AI.MachineLearning.LearningModel");\n// Presence alone does not prove evaluation support.\nvar device = new Windows.AI.MachineLearning.LearningModelDevice(\n    Windows.AI.MachineLearning.LearningModelDeviceKind.Cpu);',
+      "A successful upstream app launch does not prove Windows.AI.MachineLearning, a GPU provider or token generation. Keep compilation, package inspection, installation, launch and numerical correctness as separate results.",
+    refs: ["crossbuild", "crossbuild-porting", "openappx", "winml"],
+    code: '// Proposed C++/WinRT probe; not yet integrated or console-validated.\n#include <winrt/Windows.Foundation.Metadata.h>\n#include <winrt/Windows.AI.MachineLearning.h>\n\nbool available = winrt::Windows::Foundation::Metadata::ApiInformation::\n    IsTypePresent(L"Windows.AI.MachineLearning.LearningModel");\n// Gate model loading on availability; record failures explicitly.\n// A device request alone does not establish a working runtime.',
   },
   {
     id: "07",
@@ -166,7 +181,7 @@ export const lessons: Lesson[] = [
     steps: [
       "Measure session/model initialization separately. Define cold latency as the first evaluation in each fresh app process; collect at least 10 independent cold runs.",
       "For each process, execute 20 untimed warmups then 100 timed sequential evaluations. Materialize outputs and synchronize completion before stopping the timer.",
-      "Retain every raw sample in milliseconds, report median and p95 with sample counts and process grouping. Record peak app memory in bytes and sampling interval; distinguish observed peak from true allocation high-water mark.",
+      "Retain every raw sample in milliseconds, report median and p95 with sample counts and process grouping. Record peak app memory in bytes and sampling interval; distinguish observed peak from true allocation high-water mark. Include Linux host/toolchain revisions for cross-builds; host and device OS are different metadata fields.",
     ],
     expected:
       "Raw JSON and correctness logs. No charts are published until evidence review passes.",
@@ -227,6 +242,18 @@ export const feasibility = [
     "Documented",
     "Remote workflow documented; this project has not deployed a package.",
     "setup",
+  ],
+  [
+    "Native UWP cross-build on Linux",
+    "Upstream source-reviewed",
+    "uwp-crossbuild supports C++/WinRT and a .vcxproj subset; no .xaml or C# project compiler. Lab integration remains pending.",
+    "crossbuild",
+  ],
+  [
+    "Linux packaging / signing / Device Portal",
+    "Upstream source-reviewed",
+    "openappx handles layouts and signed packages. Upstream reports a single Series S launch; this does not validate EXP-001.",
+    "openappx",
   ],
   [
     "Foreground resource budget",

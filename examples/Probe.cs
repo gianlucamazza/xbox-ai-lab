@@ -1,4 +1,6 @@
-// Integration example for a generated C# Blank App (Universal Windows).
+// Optional Windows C# reference for a generated Blank App (Universal Windows).
+// The primary Linux path needs a native C++/WinRT port (issue #3).
+// uwp-crossbuild does not compile this C# file or .csproj projects.
 // Build and console execution are UNVERIFIED. Not a standalone project.
 using System;
 using System.Collections.Generic;

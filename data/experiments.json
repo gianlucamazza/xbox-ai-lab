@@ -5,12 +5,12 @@
     "hypothesis": "A minimal float32 Add graph can load and evaluate through the legacy WinRT CPU API in an x64 Xbox UWP app.",
     "status": "unverified",
     "environment": {
-      "hardware": "Xbox Series S / Series X \u2014 not yet executed",
+      "hardware": "Xbox Series S / Series X — not yet executed",
       "os": null,
       "sdk": "22621 or later; exact build pending",
       "configuration": "Release x64; debugger detached",
       "appMode": "app",
-      "runtime": "Windows.AI.MachineLearning \u2014 availability probe required"
+      "runtime": "Windows.AI.MachineLearning — availability probe required"
     },
     "model": {
       "name": "add.onnx",
@@ -22,17 +22,18 @@
     "sourceRevision": null,
     "provider": "CPU (requested; unverified)",
     "reproduction": [
-      "Create the UWP blank app described in tutorial 04.",
+      "Implement the native C++/WinRT probe under issue #3, using pinned uwp-crossbuild and openappx; keep Probe.cs as an optional Windows reference.",
       "Generate add.onnx using examples/generate_model.py and record its SHA-256.",
-      "Add the model as Content; adapt examples/Probe.cs to the blank app.",
-      "Deploy Release x64 to the console; run without the debugger.",
-      "Export raw timing, environment and correctness logs with commit and artifact checksums."
+      "Include the model and activation metadata in the x64 UWP layout; pack, sign and inspect with openappx.",
+      "Deploy through authenticated, certificate-pinned Device Portal and launch on each physical console without a debugger.",
+      "Export raw timing, correctness and environment logs with host/tool revisions, console provenance, source commit and artifact checksums."
     ],
     "measurements": [],
     "correctness": null,
     "limitations": [
-      "No physical console execution evidence is available.",
-      "Linux model checks cannot establish Windows or Xbox API compatibility.",
+      "No Xbox AI Lab execution evidence exists for this Add/WinML experiment.",
+      "Upstream source documentation reports a Series S launch and GGUF model load; that is not EXP-001 evidence, GPU validation or measured generation.",
+      "The native C++/WinRT port and lab cross-build are pending; Probe.cs is not directly compiled by uwp-crossbuild.",
       "GPU execution is outside this experiment."
     ],
     "artifacts": []

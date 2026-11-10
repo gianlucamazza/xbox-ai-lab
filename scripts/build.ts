@@ -50,7 +50,7 @@ await writeFile(
 await writeFile("dist/robots.txt", "User-agent: *\nAllow: /\n");
 await writeFile(
   "dist/404.html",
-  '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Page not found — Xbox AI Lab</title><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/assets/style.css"></head><body><main><div class="pagehead"><h1>Page not found.</h1><p>This research path does not exist.</p><a class="button primary" href="/docs">Open documentation →</a></div></main></body></html>',
+  '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Page not found — Xbox AI Lab</title><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="dark"><meta name="description" content="This research path does not exist."><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"></head><body><a class="skip" href="#main">Skip to content</a><main id="main" tabindex="-1"><div class="pagehead"><h1>Page not found.</h1><p>This research path does not exist.</p><a class="button primary" href="/docs">Open documentation →</a></div></main></body></html>',
 );
 execFileSync("python", ["scripts/source_archive.py"]);
 console.log(

@@ -7,12 +7,14 @@
     "dev": "vite preview --host 0.0.0.0 --port 4173",
     "build": "node --import tsx scripts/build.ts",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src scripts/build.ts tests",
-    "format": "prettier --write src tests docs data scripts/build.ts",
-    "format:check": "prettier --check src tests docs data scripts/build.ts",
+    "lint": "eslint src scripts tests",
+    "format": "prettier --write src tests docs data scripts/*.ts",
+    "format:check": "prettier --check src tests docs data scripts/*.ts",
     "test": "node --import tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
-    "audit:performance": "lhci autorun"
+    "audit:links": "node --import tsx scripts/check-internal-links.ts",
+    "audit:external-links": "node --import tsx scripts/check-external-links.ts",
+    "audit:performance": "lhci autorun && node --import tsx scripts/assert-lighthouse-medians.ts"
   },
   "dependencies": {
     "zod": "^4.6.7"

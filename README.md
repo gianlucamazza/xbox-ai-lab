@@ -15,6 +15,7 @@ npm run lint
 npm run format:check
 npm test
 npm run build
+npm run audit:links
 npx vite preview --host 127.0.0.1
 ```
 
@@ -27,7 +28,7 @@ npm audit --audit-level=high
 npm run audit:performance
 ```
 
-Playwright starts the local static server unless TEST_BASE_URL is set. Lighthouse uses three representative pages and enforces 0.95 in four categories. These commands and CI configuration are not proof they passed: see docs/release-checklist.md and docs/verification.md for actual execution status.
+Playwright starts the local static server unless TEST_BASE_URL is set. Lighthouse uses three representative pages, three runs, and a median-per-category gate of 0.95. See docs/quality-gates.md for the automated gates and the manual checklist that is not yet done. These commands and CI configuration are not proof they passed: see docs/release-checklist.md and docs/verification.md for actual execution status.
 
 ## Structure
 
@@ -38,6 +39,7 @@ Playwright starts the local static server unless TEST_BASE_URL is set. Lighthous
 - examples/: pinned host model generator and optional uncompiled Windows C# reference; native Linux probe integration is tracked in issue #3.
 - docs/: architecture decisions, console validation, maintenance and release controls.
 - tests/: schema, content/link integrity and Playwright/axe tests.
+- docs/quality-gates.md: automated website gates, Lighthouse median rule, and the manual checklist that is not yet done.
 
 ## Linux UWP build and console work
 

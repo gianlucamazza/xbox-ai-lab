@@ -72,11 +72,24 @@ dialog.addEventListener("click", (e) => {
       dialog.close();
   }
 });
-const menu = document.querySelector("#menu-toggle")!;
+const menu = document.querySelector<HTMLButtonElement>("#menu-toggle")!;
+function setMenuOpen(open: boolean) {
+  const nav = document.querySelector<HTMLElement>("#mobile-nav")!;
+  nav.hidden = !open;
+  menu.setAttribute("aria-expanded", String(open));
+  if (!open) menu.focus();
+}
 menu.addEventListener("click", () => {
   const nav = document.querySelector<HTMLElement>("#mobile-nav")!;
-  nav.hidden = !nav.hidden;
-  menu.setAttribute("aria-expanded", String(!nav.hidden));
+  setMenuOpen(nav.hidden);
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape" || e.defaultPrevented || dialog.open) return;
+  const nav = document.querySelector<HTMLElement>("#mobile-nav")!;
+  if (!nav.hidden) {
+    e.preventDefault();
+    setMenuOpen(false);
+  }
 });
 for (const button of document.querySelectorAll<HTMLButtonElement>(".copy"))
   button.addEventListener("click", async () => {

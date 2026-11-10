@@ -37,11 +37,11 @@ export const lessons: Lesson[] = [
     label: "SETUP",
     status: "Official procedure · not tested by this project",
     intro:
-      "Use the official Xbox Dev Mode app and Microsoft registration flow. Registration requirements can change; follow the linked current procedure.",
+      "Use the official Xbox Developer Mode app and Microsoft registration flow. Registration requirements can change; follow the linked current procedure.",
     prerequisites:
       "Retail console, internet connection, Microsoft account and access to the required developer registration.",
     steps: [
-      "Install Xbox Dev Mode from the console Microsoft Store. Open it and read the activation instructions.",
+      "Install Xbox Developer Mode from the console Microsoft Store. Open it and read the activation instructions.",
       "Complete the Microsoft developer registration and activation URL shown by the app. Enter the console activation code.",
       "After activation, use Switch and restart. Confirm that Dev Home opens. Keep a user signed in.",
     ],

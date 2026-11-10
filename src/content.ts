@@ -77,6 +77,7 @@ export const lessons: Lesson[] = [
       "crossbuild-ci",
       "series",
     ],
+    code: 'git clone https://github.com/gianlucamazza/uwp-crossbuild tools/uwp-crossbuild\ngit -C tools/uwp-crossbuild checkout e692f28ea613bba9bc08715ef111ad48992bf6a3\nbash tools/uwp-crossbuild/scripts/check-deps.sh\n# Complete the pinned upstream SDK setup before building.\npython -m pip install "openappx[sign] @ git+https://github.com/gianlucamazza/openappx@ceaf535424c23db03d7c46e28e36c01b528ad237"',
   },
   {
     id: "04",

@@ -43,7 +43,11 @@ const source = (id: string) => {
     : "";
 };
 const code = (s: string) =>
-  `<div class="codebox"><div class="codebar"><span>EXAMPLE / NOT CONSOLE-VALIDATED</span><button class="copy" type="button">Copy code</button></div><pre><code>${esc(s)}</code></pre></div>`;
+  `<div class="codebox"><div class="codebar"><span>EXAMPLE / NOT CONSOLE-VALIDATED</span><button class="copy" type="button">Copy code</button></div><pre tabindex="0"><code>${esc(s)}</code></pre></div>`;
+const samples = (value?: string | string[]) =>
+  (value == null ? [] : Array.isArray(value) ? value : [value])
+    .map(code)
+    .join("");
 const head = (eyebrow: string, title: string, desc: string) =>
   `<div class="pagehead"><div class="eyebrow">${eyebrow}</div><h1>${title}</h1><p>${desc}</p></div>`;
 const refs = (ids: readonly string[]) =>
@@ -61,7 +65,7 @@ function gettingStarted() {
       "Start small. Verify everything.",
       "A progressive path from official setup to proposed language model experiments. No step has been physically validated by this project.",
     ) +
-    `<div class="callout">Documentation-reviewed does not mean console-tested. Steps 06–10 are proposed experiments with explicit stop conditions.</div><div class="doclayout"><aside class="toc"><span class="tiny">ON THIS PAGE</span>${lessons.map((l) => `<a href="#tutorial-${l.id}"><span>${l.id}</span> ${l.title}</a>`).join("")}</aside><div>${lessons.map((l) => `<article class="lesson" id="tutorial-${l.id}"><div class="eyebrow">${l.id} / ${l.label}</div><h2>${l.title}</h2>${badge(l.status)}<p>${l.intro}</p><h3>Prerequisites</h3><p>${l.prerequisites}</p><h3>Procedure</h3><ol>${l.steps.map((s) => `<li>${s}</li>`).join("")}</ol>${l.code ? code(l.code) : ""}<h3>Expected result</h3><p>${l.expected}</p><h3>Troubleshooting</h3><p>${l.troubleshooting}</p>${refs(l.refs)}</article>`).join("")}</div></div>`
+    `<div class="callout">Documentation-reviewed does not mean console-tested. Steps 06–10 are proposed experiments with explicit stop conditions.</div><div class="doclayout"><aside class="toc"><span class="tiny">ON THIS PAGE</span>${lessons.map((l) => `<a href="#tutorial-${l.id}"><span>${l.id}</span> ${l.title}</a>`).join("")}</aside><div>${lessons.map((l) => `<article class="lesson" id="tutorial-${l.id}"><div class="eyebrow">${l.id} / ${l.label}</div><h2>${l.title}</h2>${badge(l.status)}<p>${l.intro}</p><h3>Prerequisites</h3><p>${l.prerequisites}</p><h3>Procedure</h3><ol>${l.steps.map((s) => `<li>${s}</li>`).join("")}</ol>${samples(l.code)}<h3>Expected result</h3><p>${l.expected}</p><h3>Troubleshooting</h3><p>${l.troubleshooting}</p>${refs(l.refs)}</article>`).join("")}</div></div>`
   );
 }
 function experimentPage() {

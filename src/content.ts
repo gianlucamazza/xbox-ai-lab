@@ -9,7 +9,7 @@ export type Lesson = {
   expected: string;
   troubleshooting: string;
   refs: string[];
-  code?: string;
+  code?: string | string[];
 };
 export const lessons: Lesson[] = [
   {
@@ -77,7 +77,6 @@ export const lessons: Lesson[] = [
       "crossbuild-ci",
       "series",
     ],
-    code: 'git clone https://github.com/gianlucamazza/uwp-crossbuild tools/uwp-crossbuild\ngit -C tools/uwp-crossbuild checkout e692f28ea613bba9bc08715ef111ad48992bf6a3\nbash tools/uwp-crossbuild/scripts/check-deps.sh\n# Complete the pinned upstream SDK setup before building.\npython -m pip install "openappx[sign] @ git+https://github.com/gianlucamazza/openappx@ceaf535424c23db03d7c46e28e36c01b528ad237"',
   },
   {
     id: "04",
@@ -105,7 +104,10 @@ export const lessons: Lesson[] = [
       "crossbuild-porting",
       "activation",
     ],
-    code: "bash tools/uwp-crossbuild/scripts/build-project.sh \\\n  --project tools/uwp-crossbuild/examples/hello-uwp/hello-uwp.vcxproj \\\n  --config Release --platform x64 --out build/hello-layout\nopenappx validate --root build/hello-layout\nopenappx pack --root build/hello-layout --out build/hello.msix\n# Sign with a local certificate matching the manifest Publisher.\nopenappx sign --package build/hello.msix --pfx /path/to/dev.pfx\nopenappx inspect --package build/hello.msix\n# Then use authenticated Device Portal deployment with --pin-sha256.",
+    code: [
+      '// Place inside the generated MainPage constructor, after InitializeComponent().\nContent = new Windows.UI.Xaml.Controls.TextBlock {\n    Text = "Hello from Xbox AI Lab", FontSize = 32\n};',
+      "bash tools/uwp-crossbuild/scripts/build-project.sh \\\n  --project tools/uwp-crossbuild/examples/hello-uwp/hello-uwp.vcxproj \\\n  --config Release --platform x64 --out build/hello-layout\nopenappx validate --root build/hello-layout\nopenappx pack --root build/hello-layout --out build/hello.msix\n# Sign with a local certificate matching the manifest Publisher.\nopenappx sign --package build/hello.msix --pfx /path/to/dev.pfx\nopenappx inspect --package build/hello.msix\n# Then use authenticated Device Portal deployment with --pin-sha256.",
+    ],
   },
   {
     id: "05",

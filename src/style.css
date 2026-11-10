@@ -590,6 +590,10 @@ footer {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   gap: 60px;
+  min-width: 0;
+}
+.doclayout > * {
+  min-width: 0;
 }
 .toc {
   position: sticky;
@@ -621,6 +625,7 @@ footer {
 .prose li {
   font-size: 14px;
   line-height: 1.9;
+  overflow-wrap: anywhere;
 }
 .lesson h2 {
   font-size: 30px;
@@ -1051,12 +1056,12 @@ body:has(dialog[open]) {
     width: 100%;
   }
   .doclayout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .toc {
     position: static;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     border-bottom: 1px solid var(--border);
     padding-bottom: 25px;
   }

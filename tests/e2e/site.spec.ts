@@ -37,12 +37,12 @@ test("search, keyboard and empty state", async ({ page }) => {
 test("copy code and source download", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/getting-started");
-  await page
-    .getByRole("button", { name: "Copy code", exact: true })
-    .first()
-    .click();
+  const sample = page
+    .locator("#tutorial-04 .codebox")
+    .filter({ hasText: "TextBlock" });
+  await sample.getByRole("button", { name: "Copy code", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "Copied", exact: true }),
+    sample.getByRole("button", { name: "Copied", exact: true }),
   ).toBeVisible();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
     "TextBlock",

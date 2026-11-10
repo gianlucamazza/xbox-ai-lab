@@ -44,6 +44,12 @@ document
   .querySelector("#close-search")!
   .addEventListener("click", () => dialog.close());
 input.addEventListener("input", update);
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    e.preventDefault();
+    dialog.close();
+  }
+});
 document.addEventListener("keydown", (e) => {
   if (
     e.key === "/" &&
